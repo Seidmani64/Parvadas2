@@ -5,13 +5,9 @@ using UnityEngine;
 public class Flock : MonoBehaviour
 {
 	internal FlockController controller;
-
     private new Rigidbody rigidbody;
-
     private Vector3 randomize;
-
-    public Transform leftTarget, rightTarget;
-
+    public Transform leftTarget, rightTarget;  //Green Ray to left and right
 
     private void Start()
     {
@@ -52,8 +48,8 @@ public class Flock : MonoBehaviour
         Vector3 follow = controller.target.localPosition - transform.localPosition; // follow leader
         Vector3 separation = Vector3.zero; 											// separation
         Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 left = Vector3.RotateTowards(transform.forward, leftTarget.position - transform.position, 0.2f, 30f);
-        Vector3 right = Vector3.RotateTowards(transform.forward, rightTarget.position - transform.position, 0.2f, 30f);
+        Vector3 left = Vector3.RotateTowards(transform.forward, leftTarget.position - transform.position, 0.2f, 30f);    //Rotate to left
+        Vector3 right = Vector3.RotateTowards(transform.forward, rightTarget.position - transform.position, 0.2f, 30f);    //Rotate to right
         Vector3 avoid = Vector3.zero;
         RaycastHit rayHitStraight;
         RaycastHit rayHitSide;
@@ -61,6 +57,7 @@ public class Flock : MonoBehaviour
         Debug.DrawRay(transform.position, right, Color.green);
         if(Physics.Raycast(transform.position, forward, out rayHitStraight, 50))
         {
+            //If the flock collides with an "Obstacle" tag object
             if(rayHitStraight.collider.tag == "Obstacle")
             {
                 Debug.Log("Obstacle straight ahead!");
@@ -78,7 +75,6 @@ public class Flock : MonoBehaviour
                 }
             }
         }
-
 
         foreach (Flock flock in controller.flockList) 
         {
