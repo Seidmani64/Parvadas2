@@ -7,15 +7,10 @@ public class Flock : MonoBehaviour
 	internal FlockController controller;
     private new Rigidbody rigidbody;
     private Vector3 randomize;
-<<<<<<< HEAD
 
     public Transform leftTarget, rightTarget, leftSide, rightSide, leftTarget2;
 
     public float repulsionWeight;
-
-=======
-    public Transform leftTarget, rightTarget;  //Green Ray to left and right
->>>>>>> c2c48237f53c45986389a442242de80f4ebf323f
 
     private void Start()
     {
