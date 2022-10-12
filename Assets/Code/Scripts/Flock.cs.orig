@@ -53,11 +53,16 @@ public class Flock : MonoBehaviour
         Vector3 follow = controller.target.localPosition - transform.localPosition; // follow leader
         Vector3 separation = Vector3.zero; 											// separation
         Vector3 forward = transform.TransformDirection(Vector3.forward);
+<<<<<<< HEAD
         Vector3 left = Vector3.RotateTowards(transform.forward, leftTarget.position, 6f, 30f);
         Vector3 right = Vector3.RotateTowards(transform.forward, rightTarget.position, 6f, 30f);
         Vector3 left2 = Vector3.RotateTowards(transform.forward, leftTarget2.position, 6f, 30f);
         Vector3 rightmost = transform.TransformDirection(Vector3.right);
         Vector3 leftmost = transform.TransformDirection(Vector3.left);
+=======
+        Vector3 left = Vector3.RotateTowards(transform.forward, leftTarget.position - transform.position, 0.2f, 30f);    //Rotate to left
+        Vector3 right = Vector3.RotateTowards(transform.forward, rightTarget.position - transform.position, 0.2f, 30f);    //Rotate to right
+>>>>>>> c2c48237f53c45986389a442242de80f4ebf323f
         Vector3 avoid = Vector3.zero;
         int layerMask =  1 << 6;
         RaycastHit rayHitStraight;
@@ -69,12 +74,20 @@ public class Flock : MonoBehaviour
 
         if(Physics.Raycast(transform.position, forward, out rayHitStraight, 50, layerMask))
         {
+<<<<<<< HEAD
                 if(!(Physics.Raycast(transform.position, left, out rayHitSide, 30, layerMask)))
                 {
                     Debug.Log("Avoiding towards the left.");
                     avoid = left;
                 }
                 else if(!(Physics.Raycast(transform.position, right, out rayHitSide, 30, layerMask)))
+=======
+            //If the flock collides with an "Obstacle" tag object
+            if(rayHitStraight.collider.tag == "Obstacle")
+            {
+                Debug.Log("Obstacle straight ahead!");
+                if(!(Physics.Raycast(transform.position, left, out rayHitSide, 30)))
+>>>>>>> c2c48237f53c45986389a442242de80f4ebf323f
                 {
                     Debug.Log("Avoiding towards the right.");
                     avoid = right;
