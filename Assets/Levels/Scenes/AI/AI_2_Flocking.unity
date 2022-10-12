@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 341273321}
   - component: {fileID: 341273320}
   - component: {fileID: 341273319}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Obstacle1 (3)
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -361,7 +361,7 @@ GameObject:
   - component: {fileID: 359039561}
   - component: {fileID: 359039560}
   - component: {fileID: 359039559}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -555,7 +555,7 @@ GameObject:
   - component: {fileID: 474346398}
   - component: {fileID: 474346397}
   - component: {fileID: 474346396}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -652,7 +652,7 @@ GameObject:
   - component: {fileID: 524738340}
   - component: {fileID: 524738339}
   - component: {fileID: 524738338}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Obstacle1 (2)
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -944,7 +944,7 @@ GameObject:
   - component: {fileID: 739001494}
   - component: {fileID: 739001493}
   - component: {fileID: 739001492}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Obstacle1 (1)
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -1041,7 +1041,7 @@ GameObject:
   - component: {fileID: 813504836}
   - component: {fileID: 813504835}
   - component: {fileID: 813504834}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1367,7 +1367,7 @@ GameObject:
   - component: {fileID: 1504379794}
   - component: {fileID: 1504379793}
   - component: {fileID: 1504379792}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1635,7 +1635,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minVelocity: 5
   maxVelocity: 8
-  flockSize: 1
+  flockSize: 10
   centerWeight: 1
   velocityWeight: 1
   separationWeight: 1
@@ -1676,7 +1676,7 @@ GameObject:
   - component: {fileID: 1953595697}
   - component: {fileID: 1953595696}
   - component: {fileID: 1953595695}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Obstacle1
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
@@ -1870,7 +1870,7 @@ GameObject:
   - component: {fileID: 2138530185}
   - component: {fileID: 2138530184}
   - component: {fileID: 2138530183}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Wall (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

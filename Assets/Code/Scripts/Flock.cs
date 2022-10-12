@@ -10,7 +10,9 @@ public class Flock : MonoBehaviour
 
     private Vector3 randomize;
 
-    public Transform leftTarget, rightTarget;
+    public Transform leftTarget, rightTarget, leftSide, rightSide, leftTarget2;
+
+    public float repulsionWeight;
 
 
     private void Start()
@@ -21,9 +23,6 @@ public class Flock : MonoBehaviour
     void Update()
     {
         transform.LookAt(controller.target);
-
-        Vector3 forward = transform.TransformDirection(Vector3.forward) * 50;
-        Debug.DrawRay(transform.position, forward, Color.green);
     }
     void FixedUpdate()
     {
@@ -52,31 +51,41 @@ public class Flock : MonoBehaviour
         Vector3 follow = controller.target.localPosition - transform.localPosition; // follow leader
         Vector3 separation = Vector3.zero; 											// separation
         Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 left = Vector3.RotateTowards(transform.forward, leftTarget.position - transform.position, 0.2f, 30f);
-        Vector3 right = Vector3.RotateTowards(transform.forward, rightTarget.position - transform.position, 0.2f, 30f);
+        Vector3 left = Vector3.RotateTowards(transform.forward, leftTarget.position, 6f, 30f);
+        Vector3 right = Vector3.RotateTowards(transform.forward, rightTarget.position, 6f, 30f);
+        Vector3 left2 = Vector3.RotateTowards(transform.forward, leftTarget2.position, 6f, 30f);
+        Vector3 rightmost = transform.TransformDirection(Vector3.right);
+        Vector3 leftmost = transform.TransformDirection(Vector3.left);
         Vector3 avoid = Vector3.zero;
+        int layerMask =  1 << 6;
         RaycastHit rayHitStraight;
         RaycastHit rayHitSide;
+        Debug.DrawRay(transform.position, forward*50f, Color.green);
         Debug.DrawRay(transform.position, left, Color.green);
         Debug.DrawRay(transform.position, right, Color.green);
-        if(Physics.Raycast(transform.position, forward, out rayHitStraight, 50))
+        //Debug.DrawRay(transform.position, left2, Color.blue);
+
+        if(Physics.Raycast(transform.position, forward, out rayHitStraight, 50, layerMask))
         {
-            if(rayHitStraight.collider.tag == "Obstacle")
-            {
-                Debug.Log("Obstacle straight ahead!");
-                if(!(Physics.Raycast(transform.position, left, out rayHitSide, 30)))
+                if(!(Physics.Raycast(transform.position, left, out rayHitSide, 30, layerMask)))
                 {
-                    avoid = left - rayHitStraight.normal;
+                    Debug.Log("Avoiding towards the left.");
+                    avoid = left;
                 }
-                else if(!(Physics.Raycast(transform.position, right, out rayHitSide, 30)))
+                else if(!(Physics.Raycast(transform.position, right, out rayHitSide, 30, layerMask)))
                 {
-                    avoid = right - rayHitStraight.normal;
+                    Debug.Log("Avoiding towards the right.");
+                    avoid = right;
+                }
+                else if(!(Physics.Raycast(transform.position, leftmost, out rayHitSide, 30, layerMask)))
+                {
+                    Debug.Log("Swerving left");
+                    avoid = leftmost + rayHitStraight.normal * repulsionWeight;
                 }
                 else
                 {
-                    avoid = right - rayHitStraight.normal;
+                    avoid = rayHitStraight.normal;
                 }
-            }
         }
 
 
@@ -96,13 +105,17 @@ public class Flock : MonoBehaviour
             randomize.Normalize();
         }
 
-        Debug.DrawRay(transform.position, avoid, Color.red);
+        //Debug.DrawRay(transform.position, avoid, Color.red);
+
+        if(avoid != Vector3.zero)
+        {
+            return avoid;
+        }
 
         return (controller.centerWeight * center +
                 controller.velocityWeight * velocity +
                 controller.separationWeight * separation +
                 controller.followWeight * follow +
-                controller.randomizeWeight * randomize +
-                controller.avoidWeight * avoid);
+                controller.randomizeWeight * randomize);
     }	
 }
