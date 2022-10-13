@@ -8,17 +8,35 @@ public class Flock : MonoBehaviour
     private new Rigidbody rigidbody;
     private Vector3 randomize;
 
-    public Transform leftTarget, rightTarget, leftSide, rightSide, leftTarget2;
-
     public float repulsionWeight;
+    public float avoidAngle;
+    public float avoidDistance;
+
+    public List<Vector3> vectors;
+    public int avoidVectorIdx = -1;
 
     private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
+        for(float i = 90; i <= 360+90-avoidAngle; i += avoidAngle)
+        {
+            Vector3 rayCheck = Vector3.zero;
+            rayCheck.z = Mathf.Sin(Mathf.Deg2Rad*(i)) * avoidDistance;
+            rayCheck.y = 0;
+            rayCheck.x = Mathf.Cos(Mathf.Deg2Rad*(i)) * avoidDistance;
+            vectors.Add(rayCheck);
+        }
     }
 
     void Update()
     {
+        foreach(Vector3 vector in vectors)
+        {
+            if(vectors.IndexOf(vector) == avoidVectorIdx)
+                Debug.DrawRay(transform.position, vector, Color.red);
+            else
+                Debug.DrawRay(transform.position, vector, Color.green);
+        }
         transform.LookAt(controller.target);
     }
     void FixedUpdate()
@@ -48,42 +66,28 @@ public class Flock : MonoBehaviour
         Vector3 follow = controller.target.localPosition - transform.localPosition; // follow leader
         Vector3 separation = Vector3.zero; 											// separation
         Vector3 forward = transform.TransformDirection(Vector3.forward);
-        Vector3 left = Vector3.RotateTowards(transform.forward, leftTarget.position, 6f, 30f);
-        Vector3 right = Vector3.RotateTowards(transform.forward, rightTarget.position, 6f, 30f);
-        Vector3 left2 = Vector3.RotateTowards(transform.forward, leftTarget2.position, 6f, 30f);
-        Vector3 rightmost = transform.TransformDirection(Vector3.right);
-        Vector3 leftmost = transform.TransformDirection(Vector3.left);
         Vector3 avoid = Vector3.zero;
         int layerMask =  1 << 6;
-        RaycastHit rayHitStraight;
-        RaycastHit rayHitSide;
-        Debug.DrawRay(transform.position, forward*50f, Color.green);
-        Debug.DrawRay(transform.position, left, Color.green);
-        Debug.DrawRay(transform.position, right, Color.green);
-        //Debug.DrawRay(transform.position, left2, Color.blue);
+        RaycastHit rayHit;
 
-        if(Physics.Raycast(transform.position, forward, out rayHitStraight, 50, layerMask))
+        
+        //Debug.DrawRay(transform.position, forward*50f, Color.red);
+        if(Physics.Raycast(transform.position, vectors[0], out rayHit, 50, layerMask))
         {
-                if(!(Physics.Raycast(transform.position, left, out rayHitSide, 30, layerMask)))
+            foreach(Vector3 vector in vectors)
+            {
+                if(!(Physics.Raycast(transform.position, vector, out rayHit, 30, layerMask)))
                 {
-                    Debug.Log("Avoiding towards the left.");
-                    avoid = left;
+                    avoidVectorIdx = vectors.IndexOf(vector);
+                    avoid = vector;
+                    Debug.DrawRay(transform.position, vector, Color.blue);
+                    break;
                 }
-                else if(!(Physics.Raycast(transform.position, right, out rayHitSide, 30, layerMask)))
-                {
-                    Debug.Log("Avoiding towards the right.");
-                    avoid = right;
-                }
-                else if(!(Physics.Raycast(transform.position, leftmost, out rayHitSide, 30, layerMask)))
-                {
-                    Debug.Log("Swerving left");
-                    avoid = leftmost + rayHitStraight.normal * repulsionWeight;
-                }
-                else
-                {
-                    avoid = rayHitStraight.normal;
-                }
+            }
         }
+        
+
+        
 
         foreach (Flock flock in controller.flockList) 
         {
@@ -101,17 +105,12 @@ public class Flock : MonoBehaviour
             randomize.Normalize();
         }
 
-        //Debug.DrawRay(transform.position, avoid, Color.red);
-
-        if(avoid != Vector3.zero)
-        {
-            return avoid;
-        }
 
         return (controller.centerWeight * center +
                 controller.velocityWeight * velocity +
                 controller.separationWeight * separation +
                 controller.followWeight * follow +
-                controller.randomizeWeight * randomize);
+                controller.randomizeWeight * randomize +
+                controller.avoidWeight * avoid);
     }	
 }

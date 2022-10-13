@@ -14,7 +14,7 @@ public class FlockController : MonoBehaviour
 	public float randomizeWeight = 1;   //Additional Random Noise
 	public List<GameObject> pointList;  //Tracking points
 	private int index = -1;
-	public float avoidWeight = 10;
+	public float avoidWeight = 4;
 
 	
 	public Flock prefab;
@@ -27,7 +27,6 @@ public class FlockController : MonoBehaviour
 
 	private void FindNextPoint() 
     {
-        print("Finding next point");
         index = (index+1)%pointList.Count; //Random.Range(0, pointList.Count);
         target = pointList[index].transform;
     }
@@ -48,7 +47,6 @@ public class FlockController : MonoBehaviour
     {
 		if (Vector3.Distance(flockCenter, target.position) <= 8f) 
         {
-            print("Reached the destination point -- calculating the next point");
             FindNextPoint();
         }
 		//Calculate the Center and Velocity of the whole flock group
