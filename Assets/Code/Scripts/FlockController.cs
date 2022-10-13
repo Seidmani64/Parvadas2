@@ -12,9 +12,10 @@ public class FlockController : MonoBehaviour
 	public float separationWeight = 1;  //Determine how far flock should be seperated within the group
 	public float followWeight = 1;      //How close the flock should follow to the leader(the more weight make the closer follow)
 	public float randomizeWeight = 1;   //Additional Random Noise
+	public float repulsionWeight = 1;
 	public List<GameObject> pointList;  //Tracking points
 	private int index = -1;
-	public float avoidWeight = 4;
+	public float avoidWeight = 1;
 
 	
 	public Flock prefab;

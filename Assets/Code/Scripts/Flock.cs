@@ -8,7 +8,6 @@ public class Flock : MonoBehaviour
     private new Rigidbody rigidbody;
     private Vector3 randomize;
 
-    public float repulsionWeight;
     public float avoidAngle;
     public float avoidDistance;
 
@@ -68,19 +67,19 @@ public class Flock : MonoBehaviour
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 avoid = Vector3.zero;
         int layerMask =  1 << 6;
-        RaycastHit rayHit;
+        RaycastHit rayHitStraight;
+        RaycastHit rayHitSide;
 
         
         //Debug.DrawRay(transform.position, forward*50f, Color.red);
-        if(Physics.Raycast(transform.position, vectors[0], out rayHit, 50, layerMask))
+        if(Physics.Raycast(transform.position, vectors[0], out rayHitStraight, 50, layerMask))
         {
             foreach(Vector3 vector in vectors)
             {
-                if(!(Physics.Raycast(transform.position, vector, out rayHit, 30, layerMask)))
+                if(!(Physics.Raycast(transform.position, vector, out rayHitSide, 30, layerMask)))
                 {
                     avoidVectorIdx = vectors.IndexOf(vector);
-                    avoid = vector;
-                    Debug.DrawRay(transform.position, vector, Color.blue);
+                    avoid = ((vector + rayHitStraight.normal)*controller.repulsionWeight);
                     break;
                 }
             }

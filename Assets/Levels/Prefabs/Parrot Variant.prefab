@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 540278c194eece84096bab974bfc3d43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  repulsionWeight: 0.3
   avoidAngle: 20
-  avoidDistance: 5
+  avoidDistance: 10
   vectors: []
+  avoidVectorIdx: -1
